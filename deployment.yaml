@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: nginxapp
+spec:
+  replicas: 3
+  selector: 
+    matchExpressions:
+    - key: app
+      operator: In
+      values: 
+      - nginxapp
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template: 
+    metadata:
+      labels:
+        app: nginxapp
+    spec:
+      containers:
+      - name: nginxapp-con
+        image: nginx
+        ports: 
+        - containerPort: 80
